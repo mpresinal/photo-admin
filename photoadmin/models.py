@@ -10,6 +10,7 @@ class CommonDateField(models.Model):
     Last update: date time of the last update
     
     """
+    
     creation_date = models.DateTimeField(auto_now_add=True)
     last_update = models.DateTimeField(auto_now=True)
     
@@ -22,9 +23,10 @@ class CommonDateField(models.Model):
 class Address(CommonDateField):
     """ This class represents a person's address
     """
+    
     id = models.BigAutoField(db_column="address_id", primary_key=True)
     street = models.CharField(db_column="street", max_length=200)
-    appartment = models.CharField(db_column="appartment", max_length=10, null=True, blank=True)
+    apartment = models.CharField(db_column="apartment", max_length=10, null=True, blank=True)
     zip_code = models.CharField(db_column="zip_code", max_length=20)
     city = models.CharField(db_column="city", max_length=100)
     state = models.CharField(db_column="state", max_length=100)
@@ -39,6 +41,7 @@ class Person(CommonDateField):
     """ This class represent a person in the system.
     
     """
+    
     id = models.BigAutoField(db_column="person_id", primary_key=True)
     name = models.CharField(db_column="name", max_length=60)
     last_name = models.CharField(db_column="last_name", max_length=60)
@@ -48,7 +51,7 @@ class Person(CommonDateField):
     email = models.EmailField(db_column="email", max_length=100)
     facebook = models.CharField(db_column="facebook", max_length=100, null=True, blank=True)
     whatsapp = models.CharField(db_column="whatsapp", max_length=30, null=True, blank=True)
-    address = models.ForeignKey(Address, on_delete=models.PROTECT)
+    address = models.ForeignKey(Address, db_column="address_id", on_delete=models.PROTECT)
     
     
     class Meta:
@@ -60,8 +63,9 @@ class Photographer(CommonDateField):
     """ This class represents a photographer in the systen.
     
     """
-    id = models.BigAutoField(db_column="photographer_id")
-    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    
+    id = models.BigAutoField(db_column="photographer_id", primary_key=True)
+    person = models.ForeignKey(Person, db_column="person_id", on_delete=models.CASCADE)
     
     # the water mark file name with extension
     water_mark_file = models.CharField(db_column="water_mark_file", max_length=50)
@@ -70,3 +74,71 @@ class Photographer(CommonDateField):
         db_table="photographer"
 
 # End Photographer class
+
+class PhotoStudio(CommonDateField):
+    """ This class represents a photo studio in the system.
+    
+    A photo studio is a place where a photographer works.
+    """
+    
+    id = models.BigAutoField(db_column="photo_studio_id", primary_key=True)
+    photographer = models.ForeignKey(Photographer, db_column="photographer_id", on_delete=models.CASCADE)
+    name = models.CharField(db_column="name", max_length=100)
+    street = models.CharField(db_column="street", max_length=200)    
+    zip_code = models.CharField(db_column="zip_code", max_length=20)
+    city = models.CharField(db_column="city", max_length=100)
+    state = models.CharField(db_column="state", max_length=100)
+    country = models.CharField(db_column="country", max_length=100)
+    location = models.CharField(db_column="location", max_length=200)
+    
+    class Meta:
+        db_table = "photo_studio"
+
+
+class PhotoPrinting(CommonDateField):
+    """ This class represents a photo printing in the system.
+    
+    A photo printing is where a photographer goes to print their photos.
+    """
+    
+    id = models.BigAutoField(db_column="photo_printing_id", primary_key=True)
+    name = models.CharField(db_column="name", max_length=100)
+    phone = models.CharField(db_column="phone", max_length=30)
+    email = models.EmailField(db_column="email", max_length=100, null=False, blank=True)
+    contact_name = models.CharField(db_column="contact_name", max_length=100)
+    contact_phone = models.CharField(db_column="contact_phone", max_length=30)
+    contact_email = models.EmailField(db_column="contact_email", max_length=100)
+    address_street = models.CharField(db_column="street", max_length=200)    
+    address_zip_code = models.CharField(db_column="zip_code", max_length=20)
+    address_city = models.CharField(db_column="city", max_length=100)
+    address_state = models.CharField(db_column="state", max_length=100)
+    address_country = models.CharField(db_column="country", max_length=100)
+    address_location = models.CharField(db_column="location", max_length=200, null=True, blank=False)
+    
+    class Meta:
+        db_table = "photo_printing"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
