@@ -94,6 +94,8 @@ class PhotoStudio(CommonDateField):
     class Meta:
         db_table = "photo_studio"
 
+# End PhotoStudio class
+
 
 class PhotoPrinting(CommonDateField):
     """ This class represents a photo printing in the system.
@@ -114,14 +116,77 @@ class PhotoPrinting(CommonDateField):
     address_state = models.CharField(db_column="state", max_length=100)
     address_country = models.CharField(db_column="country", max_length=100)
     address_location = models.CharField(db_column="location", max_length=200, null=True, blank=False)
+    photographers = models.ManyToManyField(
+        Photographer,
+        through="PhotographerPhotoPrinting",
+        through_fields=("photoprinting","photographer")
+    )
     
     class Meta:
         db_table = "photo_printing"
+# End PhotoStudio class
 
 
+class PhotographerPhotoPrinting(CommonDateField):
+    """ This class is a mapping between Photographer and PhotoPrinting
+    
+    """
+    
+    # photographer_photoprinting will be an atribute in the class Photographer
+    photographer = models.ForeignKey(
+        Photographer,
+        on_delete=models.CASCADE,
+        db_column="photographer_id",
+        related_name="photographer_photoprinting"
+    )
+    
+    # photographer_photoprinting will be an atribute in the class PhotoPrinting
+    photoprinting = models.ForeignKey(
+        PhotoPrinting,
+        on_delete=models.CASCADE,
+        db_column="photo_printing_id",
+        related_name="photographer_photoprinting"
+    )
+    
+    
+    # photo printing photographer code 
+    photographer_code = models.CharField(db_column="photo_printing_code", max_length=10)
+    
+    class Meta:
+        db_table="photographer_photo_printing"
+    
+# End class definition    
 
 
+class PhotoShoot(CommonDateField):
+    """ This class represents a photo shoot
+    """
+    id = models.BigAutoField(db_column="photo_shoot_id", primary_key=True)
+    photographer = models.ForeignKey(
+        Photographer,
+        on_delete=models.CASCADE,
+        db_column="photographer_id"        
+    )
+    
+    name = models.CharField(db_column="name", max_length=100)
+    description = models.CharField(db_column="description", max_length=256, null=True, blank=True)
+    capture_time = models.DateTimeField(db_column="capture_time")
+    
+    class Meta:
+        db_table="photo_shoot"
 
+# End class PhotoShoot
+
+class PhotoShootPhoto(CommonDateField):
+    id = models.BigAutoField(db_column="photo_shoot_photo_id", primary_key=True)
+    photo_file = models.ImageField(db_column="file")
+    file_dir = models.CharField(db_column="directory", _max_length=200, null=False, blank=True)
+    file_size = models.IntegerField(db_column="file_size", bull=False, blank=True)
+    
+    class Meta:
+        db_table="photo_shoot_photo"
+
+# End class PhotoShootPhoto
 
 
 
