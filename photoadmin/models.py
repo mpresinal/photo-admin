@@ -1,5 +1,4 @@
 from django.db import models
-from unittest.util import _MAX_LENGTH
 
 
 class CommonDateField(models.Model):
@@ -178,18 +177,85 @@ class PhotoShoot(CommonDateField):
 # End class PhotoShoot
 
 class PhotoShootPhoto(CommonDateField):
+    """ This class represents
+    
+    """
+    
     id = models.BigAutoField(db_column="photo_shoot_photo_id", primary_key=True)
+    photo_shoot_id = models.ForeignKey(PhotoShoot, on_delete=models.CASCADE, db_column="photo_shoot_id")
     photo_file = models.ImageField(db_column="file")
-    file_dir = models.CharField(db_column="directory", _max_length=200, null=False, blank=True)
-    file_size = models.IntegerField(db_column="file_size", bull=False, blank=True)
+    file_dir = models.CharField(db_column="directory", max_length=200, null=False, blank=True)
+    file_size = models.IntegerField(db_column="file_size", null=False, blank=True)
     
     class Meta:
         db_table="photo_shoot_photo"
 
 # End class PhotoShootPhoto
 
+class PhotoShootSelection(CommonDateField):
+    """ This class represent a photo shoot selection
+    
+    """
+    
+    id = models.BigAutoField(db_column="photo_shoot_selection_id" ,primary_key=True)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, db_column="person_id", null=True, blank=True)
+    print_after_confirmation = models.BooleanField(db_column="print_after_confirmation")
+    photo_printing_id = models.BigIntegerField(db_column="photo_printing_id")
+    
+    class Meta:
+        db_table="photo_shoot_selection"
 
+# End class PhotoShootSelection
 
+class PrintingSize(models.Model):
+    id = models.AutoField(db_column="printing_size_id", primary_key=True)
+    name = models.CharField(db_column="name", max_length=20)
+    width = models.IntegerField(db_column="width")
+    height = models.IntegerField(db_column="height")
+    
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        db_table="printing_size"
+        
+# End class PrintingSize
+
+class SelectionPhoto(CommonDateField):
+    
+    id = models.BigAutoField(db_column="selection_photo_id", primary_key=True)
+    photoshoot_photo_id = models.ForeignKey(PhotoShootPhoto, on_delete=models.CASCADE, db_column="photo_shoot_photo_id")
+    photoshoot_selection_id = models.ForeignKey(PhotoShootSelection, on_delete=models.CASCADE, db_column="photo_shoot_selection_id")
+    printing_size = models.ForeignKey(PrintingSize, on_delete=models.CASCADE, db_column="printing_size_id", null=True, blank=True)
+    amount = models.IntegerField(db_column="amount", null=True, blank=True, default=1)
+    
+    class Meta:
+        db_table="selection_photo"
+
+# End class PhotoShootSelection
+
+class SelectionRequest(CommonDateField):
+    
+    STATES = [
+        ('PE', 'Pending'),
+        ('OK', 'Accepted'),
+        ('ER', 'Error')
+    ]
+    
+    id = models.BigAutoField(db_column="selection_request_id", primary_key=True)
+    photographer = models.ForeignKey(Photographer, on_delete=models.CASCADE, db_column="photographer_id")
+    photoshoot_selection_id = models.ForeignKey(PhotoShootSelection, on_delete=models.CASCADE, db_column="photo_shoot_selection_id")
+    client_email = models.EmailField(db_column="client_email", max_length=100)
+    token = models.CharField(db_column="token", max_length=100)
+    security_code = models.CharField(db_column="security_code", max_length=8)
+    received_date = models.DateTimeField(db_column="received_date", null=True, blank=True)
+    state = models.CharField(db_column="state", max_length=5, choices=STATES, default='PE')
+    error_code = models.IntegerField(db_column="error_code", null=True, blank=True)
+    
+    class Meta:
+        db_table="selection_request"
+
+# End class PhotoShootSelection
 
 
 
