@@ -1,5 +1,6 @@
 from django.db import models
-
+from django.contrib.auth.models import User
+from django.conf import settings
 
 class CommonDateField(models.Model):
     """This class provide the common date fields that every model must have.
@@ -51,6 +52,8 @@ class Person(CommonDateField):
     facebook = models.CharField(db_column="facebook", max_length=100, null=True, blank=True)
     whatsapp = models.CharField(db_column="whatsapp", max_length=30, null=True, blank=True)
     address = models.ForeignKey(Address, db_column="address_id", on_delete=models.PROTECT)
+    
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, db_column="user_id", related_name="person", on_delete=models.CASCADE)
     
     
     class Meta:
