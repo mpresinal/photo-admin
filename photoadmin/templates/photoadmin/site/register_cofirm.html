@@ -1,0 +1,28 @@
+{% extends './base.html' %}
+
+<!--
+    {% load staticfiles %} 
+-->
+<!DOCTYPE html>
+
+{% block title %} Nuevo Usuario {% endblock %}
+
+    {% block content%}    
+        <div>
+            <div>
+
+                <h1 class="logo-name">{{ app_name }}</h1>
+
+            </div>
+            
+            <h3>Nuevo usuario</h3>
+            <p>Complete el siguiente formulario</p>
+            
+            <p>Su cuenta ha sido creada. Se ha enviado un correo para activar su cuenta</p>
+            
+            <p class="m-t"> <small>{{ app_name }} Copyright &copy; 2017</small> </p>
+        </div>                
+            
+    {% endblock %}    
+    
+    

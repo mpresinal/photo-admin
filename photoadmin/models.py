@@ -55,6 +55,8 @@ class Person(CommonDateField):
     
     user = models.OneToOneField(settings.AUTH_USER_MODEL, db_column="user_id", related_name="person", on_delete=models.CASCADE)
     
+    def __str__(self):
+        return "{} {}".format(self.name, self.last_name)
     
     class Meta:
         db_table = "person"
