@@ -29,10 +29,13 @@
             {% csrf_token %}
             
                 {% for field in form %}
-                
+                                
                 <div class="form-group">
                      <label class="block text-left">{{ field.label }}</label>
                     {{ field }}
+                    <div class="m-t-xs">
+                        <small class="text-danger ng-hide"> {{ form.errors field.name }}</small>
+                    </div>
                 </div>
                 
                 {% endfor %}

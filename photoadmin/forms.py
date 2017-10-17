@@ -35,7 +35,9 @@ class RegistrationForm(forms.Form):
                 new_user.email=data["email"]
                 new_user.set_password(data["user_password"])
                 
-                not_exist_user = self.validate_not_exist_user(self, new_user.username, new_user.email)
+                not_exist_user = self.validate_not_exist_user(new_user.username, new_user.email)
+                
+                print("not_exist_user = "+ str(not_exist_user))
                 
                 if not_exist_user:
                     new_user.save()
