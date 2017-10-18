@@ -1,5 +1,6 @@
 {% extends './base.html' %}
 
+{% load photoadmin_tags %}
 <!--
     {% load staticfiles %} 
 -->
@@ -23,7 +24,7 @@
             </div>
             
             <h3>Nuevo usuario</h3>
-            <p>Complete el siguiente formulario</p>
+            <p>Para crear su cuenta, complete el siguiente formulario</p>
             
             <form class="m-t" role="form" action="." method="post">
             {% csrf_token %}
@@ -34,7 +35,7 @@
                      <label class="block text-left">{{ field.label }}</label>
                     {{ field }}
                     <div class="m-t-xs">
-                        <small class="text-danger ng-hide"> {{ form.errors field.name }}</small>
+                        <small class="text-danger ng-hide"> {% dict_value form.errors field.name %}</small>
                     </div>
                 </div>
                 
