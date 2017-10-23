@@ -34,6 +34,7 @@ class RegistrationForm(forms.Form):
                 new_user = User(first_name=data["name"], last_name=data["last_name"], username=data["username"])
                 new_user.email=data["email"]
                 new_user.set_password(data["user_password"])
+                new_user.is_active = False
                 
                 not_exist_user = self.validate_not_exist_user(new_user.username, new_user.email)
                 
@@ -93,4 +94,18 @@ class RegistrationForm(forms.Form):
     # end sent_confirmation_email
         
 # end class
-        
+
+
+class ActivationAccountForm(forms.Form):
+    """ This class process the request of activation account form.
+    """
+    
+    def process_form(self):
+        pass
+    # End process_form
+    
+# end calss
+
+
+
+

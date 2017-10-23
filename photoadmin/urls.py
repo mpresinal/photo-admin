@@ -11,7 +11,8 @@ app_name = settings.APP_NAME
 
 urlpatterns = [
     url(r"^$", views.index, name="index"),
-    url(r"^registration/", views.registration, name="registration"),
-    url(r"^registration/confirmation", views.registration_cofirm, name="registration_confirm")
+    url(r"^registration/$", views.registration, name="registration"),
+    url(r"^registration/confirmation/$", views.registration_cofirm, name="registration_confirm"),
+    url(r"^activate_account/(?P<hashed_email>\w+)/$", views.activate_account, name="activate_account"),
     
 ]
