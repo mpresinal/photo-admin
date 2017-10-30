@@ -36,7 +36,7 @@ def registration_cofirm(request):
     return render(request, "photoadmin/site/register_cofirm.html", {"app_name": APP_NAME})  
 
 def account_activation(request, hashed_email):
-    ''' View function to activation account page
+    ''' View function for activation account page
     '''
     form = None
     
@@ -71,7 +71,7 @@ def account_activation(request, hashed_email):
             
     # End main if
     
-    return render(request, "photoadmin/", {"app_name": APP_NAME, "form": form})
+    return render(request, "photoadmin/site/activate_account.html", {"app_name": APP_NAME, "form": form})
 
 # End account_activation
         

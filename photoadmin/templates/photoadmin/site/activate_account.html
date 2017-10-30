@@ -1,61 +1,39 @@
 {% extends './base.html' %}
-
+{% load i18n %}
+{% load staticfiles %}
 <!DOCTYPE html>
 
 {% block title %} 
     {% trans "Activar Cuenta" %}
 {% endblock %}
 
+{% block stylesheet %}
+<style type="text/css">
+	.help-block {
+	    margin-left: 41px;
+	}
+</style>
+{% endblock %}
 {% block content %}
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
-            <div class="ibox float-e-margins">
+            <div class="ibox">
                 <div class="ibox-title">
-                    <h5><strong>Registar Veh&iacute;culo</strong></h5>
+                    <h5><strong>{% trans "Activación de Cuenta" %}</strong></h5>
                 </div>
-                <div class="ibox-content wizard">
+                <div class="ibox-content">
 
-
-                    <div class="steps clearfix">
-                        <ul>
-
-                            <li class="{% if step == "one" %}current{% endif %}">
-                                <a ui-sref=".step_one" class="btn-default"><span>1</span> {% trans "Datos Personales" %}</a>
-                            </li>
-                            <li class="{% if step == "two" %}current{% endif %}">
-                                <a ui-sref=".step_two" class="btn-default"><span>2</span> {% trans "Dirección" %}</a>
-                            </li>
-                            <li class="{% if step == "three" %}current{% endif %}">
-                                <a ui-sref=".step_three" class="btn-default"><span>3</span> {% trans "Contacto" %}</a>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="wizard">
-                        <div class="content">
-
-                        <form name="signupForm" class="p-lg">
-
-                            <!-- our nested state views will be injected here -->
-                            <div id="form-views" ui-view>
-                              {% if step == "one" %}
-                                {% include "./acount_activation/step_one.html" %}                                
-                              {% endif %}
-                              
-                              {% if step == "two" %}
-                                {% include "./acount_activation/step_two.html" %}                                
-                              {% endif %}
-                              
-                              {% if step == "three" %}
-                                {% include "./acount_activation/step_three.html" %}                                
-                              {% endif %}
-                              
-                            </div>
+                        <form id="wizardForm" name="activationForm" class="wizard-big" method="post" action=".">
+                            {% csrf_token %}
+                            <input type="hidden" name="current_step" value="{{step}}" />
+                            
+                            {% include "./account_activation/step_one.html" %}
+                            {% include "./account_activation/step_two.html" %}
+                            {% include "./account_activation/step_three.html" %}                            
+                            
                         </form>
 
-                        </div>
-                    </div>
                     
                 </div>
             </div>
@@ -63,4 +41,21 @@
 
     </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Steps -->
+<script src="http://localhost/photoadmin/static/photoadmin/js/plugins/staps/jquery.steps.min.js"></script>
+    
+<script type="text/javascript">
+$(document).ready(function() {
+    
+    $("#wizardForm").steps({
+        headerTag: 'h1',
+        bodyTag: 'fieldset'
+    });
+    
+});
+    
+</script>
 {% endblock %}
