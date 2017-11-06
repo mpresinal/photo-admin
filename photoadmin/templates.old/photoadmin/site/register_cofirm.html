@@ -1,0 +1,29 @@
+{% extends './base.html' %}
+
+<!--
+    {% load staticfiles %} 
+-->
+<!DOCTYPE html>
+
+{% block title %} Nuevo Usuario {% endblock %}
+
+    {% block content%}  
+    <div class="middle-box text-center loginscreen   animated fadeInDown">  
+        <div>
+            <div>
+
+                <h1 class="logo-name">{{ app_name }}</h1>
+
+            </div>
+            
+            <h3>Cuenta Creada</h3>
+            
+            <p>Su cuenta ha sido creada. Se ha enviado un correo para activar su cuenta</p>
+            
+            <p class="m-t"> <small>{{ app_name }} Copyright &copy; 2017</small> </p>
+        </div> 
+    </div>               
+            
+    {% endblock %}    
+    
+    

@@ -8,6 +8,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext
+from django.db.models import ObjectDoesNotExist
 
 from . import models
 
@@ -99,10 +100,128 @@ class RegistrationForm(forms.Form):
 class ActivationAccountForm(forms.Form):
     """ This class process the request of activation account form.
     """
+    TEL_ATTRIB = {k:v for k,v in COMMON_ATTRIB.items()}
+    TEL_ATTRIB['type'] = 'tel'
+    
+    name = forms.CharField(label=ugettext("Nombre"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    last_name = forms.CharField(label=ugettext("Apellido"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    birthday = forms.DateField(label=ugettext("birthday"), required=False, widget=forms.DateInput())
+    phone = forms.CharField(label=ugettext("Telefono"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))
+    cell_phone = forms.CharField(label=ugettext("Celular"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))
+    whatsapp = forms.CharField(label=ugettext("Whatsapp"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))    
+    email = forms.EmailField(label=ugettext("Email"), max_length=60, widget=forms.EmailInput(attrs=COMMON_ATTRIB))
+    facebook = forms.URLField(max_length=100, required=False)
+    
+    #Person Address fields
+    
+    address = forms.CharField(label=ugettext("Direcci&oacute;n"), max_length=220, widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    city = forms.CharField(label=ugettext("Ciudad"), max_length=100, widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    state = forms.CharField(label=ugettext("Estado")+'/'+ugettext("Provincia"), max_length=20, widget=forms.TextInput(attrs=COMMON_ATTRIB))    
+    zip_code = forms.IntegerField(label=ugettext("C&oacute;digo Postal"), widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    country = forms.CharField(label=ugettext("Pa&iacute;s"), max_length=100, widget=forms.TextInput(attrs=COMMON_ATTRIB))
+    
+    # Contract Acceptance
+    aggrement_acceptance = forms.BooleanField()
     
     def process_form(self):
-        pass
+        
+        # Validating the form 
+        if self.is_valid():
+            form_data = self.cleaned_data;
+            person = self.get_person_instance(form_data)
+            address = self.get_addres_instance(form_data)
+            
+            print("person = {}".format(person))
+            print("address = {}".format(address))
+            
+            # TODO: Check if the address already exist            
+
+            try:                           
+                
+                user = User.objects.get(email=person.email)
+                print("user = {}".format(user))
+                
+                # Saving address first
+                print("** Saving address...")
+                address.save();
+                print("address.id = {}".format(address.id))
+                print("** Saving address...DONE")
+                person.address = address
+                
+                # Saving person
+                print("** Saving person...")
+                person.user=user
+                person.save()
+                print("person.id = {}".format(person.id))
+                print("** Saving person...DONE")
+                
+                # Activating account
+                print("** Activating user accounts...")
+                person.user.is_active = True                     
+                person.user.save()                
+                print("** Activating user accounts...DONE")                         
+
+                return True
+                                            
+            except Exception as e:
+                print("Error activating Account. {}".format(e))
+                self.add_error(None, ugettext("Error activando cuenta"));
+                        
+        return False                    
+        
     # End process_form
+    
+    def activate_acount(self, user_email):
+        
+        # Getting user by email        
+        try:
+            user = User.objects.get(email=user_email)
+            if user:
+                if not user.is_active:
+                    user.is_active = True;
+                    user.save()
+                    return user
+                # End if
+                
+        except ObjectDoesNotExist:
+            print("Error finding user by email")
+            raise ObjectDoesNotExist()
+            
+        return None    
+    #End activate_account
+    
+    def get_person_instance(self, data):
+        '''
+        return a Person instance using the fields related to a person.
+        '''
+        person = models.Person()
+        person.name = data["name"]
+        person.last_name = data["last_name"]
+        person.birthday = data["birthday"]
+        person.phone = data["phone"]
+        person.cell_phone = data["cell_phone"]
+        person.email = data["email"]
+        person.facebook = data["facebook"]
+        person.whatsapp = data["whatsapp"]
+        
+        return person              
+        
+    # End get_person_instance
+    
+    def get_addres_instance(self, data):
+        '''
+        return an Address instance using the fields related to an address.
+        '''
+        addr = models.Address()
+        addr.address = data["address"]
+        addr.city = data["city"]
+        addr.state = data["state"]
+        addr.zip_code = data["zip_code"]
+        addr.country = data["country"]
+        
+        return addr
+    # End get_addres_instance
+    
     
 # end calss
 

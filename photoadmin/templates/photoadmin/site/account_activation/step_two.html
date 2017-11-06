@@ -1,40 +1,38 @@
 {% load i18n %}
 
-<h1>{% trans "Dirección" %}</h1>
+<h1>{% trans "Direcci&oacute;n" %}</h1>
 <fieldset>
-    <h2>{% trans "Dirección" %}</h2>
+    <h2>{% trans "Direcci&oacute;n" %}</h2>
         
     <div class="row">
         
         <div class="form-group col-lg-12">
-            <label>{% trans "Dirección" %}</label>
-            <input name="name" type="text" class="form-control" maxlength="60">                
+            <label>{% trans "Direcci&oacute;n" %}</label>
+            <input name="address" type="text" class="form-control" maxlength="60">                
         </div>
         
         <div class="form-group col-lg-6">
             <label>{% trans "Ciudad" %}</label>
-            <input name="name" type="text" class="form-control" maxlength="60">                
+            <input name="city" type="text" class="form-control" maxlength="60">                
         </div>
         
         <div class="form-group col-lg-6">
             <label>{% trans "Estado" %}/{% trans "Provincia" %}</label>
-            <input name="name" type="text" class="form-control" maxlength="60">                
+            <input name="state" type="text" class="form-control" maxlength="60">                
         </div>            
         
         <div class="form-group col-lg-6">
-            <label>{% trans "Código Postal" %}</label>
-            <input name="name" type="text" class="form-control" maxlength="60">                
+            <label>{% trans "C&oacute;digo Postal" %}</label>
+            <input name="zip_code" type="text" class="form-control" maxlength="60">                
         </div>
         
         <div class="form-group col-lg-6">
-            <label>{% trans "País" %}</label>            
-            <select class="form-control">
+            <label>{% trans "Pa&iacute;s" %}</label>            
+            <select class="form-control" name="country">
                 <option>Republica Dominicana</option>
             </select>                
         </div>    
         
-    </div>
-    
-    <input type="submit" class="btn btn-primary" value="{% trans "Siguiente" %}"/>    
-    
+    </div>    
+       
 </fieldset>

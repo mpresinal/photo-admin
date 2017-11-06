@@ -25,7 +25,8 @@ class Address(CommonDateField):
     """
     
     id = models.BigAutoField(db_column="address_id", primary_key=True)
-    address = models.CharField(db_column="address", max_length=220)    
+    street = models.CharField(db_column="street", max_length=200)
+    apartment = models.CharField(db_column="apartment", max_length=10, null=True, blank=True)
     zip_code = models.CharField(db_column="zip_code", max_length=20)
     city = models.CharField(db_column="city", max_length=100)
     state = models.CharField(db_column="state", max_length=100)
@@ -71,7 +72,7 @@ class Photographer(CommonDateField):
     person = models.ForeignKey(Person, db_column="person_id", on_delete=models.CASCADE)
     
     # the water mark file name with extension
-    water_mark_file = models.ImageField(db_column="water_mark_file", upload_to="photographer/watermarks", blank=True, null=True)
+    water_mark_file = models.CharField(db_column="water_mark_file", max_length=50)
     
     class Meta:
         db_table="photographer"
@@ -260,3 +261,20 @@ class SelectionRequest(CommonDateField):
         db_table="selection_request"
 
 # End class PhotoShootSelection
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,11 +3,7 @@ from django import template
 register = template.Library()
 
 @register.simple_tag
-def dict_value(dictionary, key, default_value=""):
-    print("dict_value() :: Enter")
-    print(dictionary)
-    print("key={}".format(key))
-    print("default_value={}".format(default_value))
+def dict_value(dictionary, key, default_value=""):    
     
     value = ""
     

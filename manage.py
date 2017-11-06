@@ -3,7 +3,18 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "photoadmin_site.settings")
+
+    current_enviroment = os.getenv('PYTHON_ENV')
+    print('Enviroment: {}'.format(current_enviroment))
+    
+    if current_enviroment == 'PROD':
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "photoadmin_site.settings.prod")       
+        
+    else:
+        os.environ.setdefault("DJANGO_SETTINGS_MODULE", "photoadmin_site.settings.local")
+    
+    print('DJANGO_SETTINGS_MODULE: {}'.format(os.environ['DJANGO_SETTINGS_MODULE']))
+    
     try:
         from django.core.management import execute_from_command_line
     except ImportError:

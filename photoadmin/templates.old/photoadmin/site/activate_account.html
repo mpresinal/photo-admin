@@ -45,35 +45,14 @@
 
 {% block scripts %}
 <!-- Steps -->
-<script src="{% static 'photoadmin/js/plugins/staps/jquery.steps.min.js' %}"></script>
-<script src="{% static 'photoadmin/js/activation_account/activation_account.js'%}" ></script>
+<script src="http://localhost/photoadmin/static/photoadmin/js/plugins/staps/jquery.steps.min.js"></script>
     
 <script type="text/javascript">
 $(document).ready(function() {
     
     $("#wizardForm").steps({
         headerTag: 'h1',
-        bodyTag: 'fieldset',
-        
-        /* Behaviour */
-        enableCancelButton: true,
-        
-        /* Events */
-        onStepChanging: function(event, currentIndex, newIndex){ return wizard_onStepChange(event, currentIndex, newIndex); },
-        onFinished: function(event, currentIndex){ return wizard_onFinished(event, currentIndex); },
-        onCanceled: function(event){ return wizard_onCancel(event); },
-        
-        /* Labels */
-        labels: {
-        	cancel: 'Cancelar',
-        	current: 'Actual',
-        	pagination: 'Paginacion',
-        	finish: 'Finalizar',
-        	next: 'Siguiente',
-        	previous: "Atras",
-        	loading: 'Cargando ...'        	
-        }
-        
+        bodyTag: 'fieldset'
     });
     
 });

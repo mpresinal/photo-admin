@@ -10,7 +10,8 @@ from django.contrib.auth import models as django_models;
 APP_NAME = settings.APP_NAME
 
 def index(request):
-    return render(request, "photoadmin/index.html", {}, "text/html");
+    return HttpResponseRedirect(reverse(APP_NAME+":registration"))
+    #return render(request, "photoadmin/index.html", {}, "text/html");
 # End index function
 
 def registration(request):
@@ -68,6 +69,10 @@ def account_activation(request, hashed_email):
         
     else:
         form = forms.ActivationAccountForm(request.POST)
+        
+        # If everything was ok then redirect user to login page
+        if form.process_form():
+            return HttpResponseRedirect(reverse(APP_NAME+':login'));
             
     # End main if
     
