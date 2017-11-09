@@ -72,11 +72,15 @@ def account_activation(request, hashed_email):
         
         # If everything was ok then redirect user to login page
         if form.process_form():
-            return HttpResponseRedirect(reverse(APP_NAME+':login'));
+            return HttpResponseRedirect(reverse(APP_NAME+':activate_account_confirmation'));
             
     # End main if
     
     return render(request, "photoadmin/site/activate_account.html", {"app_name": APP_NAME, "form": form})
 
 # End account_activation
+
+def account_activation_confirm(request):
+    pass
+# End account_activation_confirm function
         

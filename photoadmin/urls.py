@@ -16,7 +16,9 @@ urlpatterns = [
     url(r"^registration/$", views.registration, name="registration"),
     url(r"^registration/confirmation/$", views.registration_cofirm, name="registration_confirm"),
     url(r"^activate_account/(?P<hashed_email>\w+@\w+\.\w+)/$", views.account_activation, name="activate_account"),
-    # Esto esta causando error cundo trato de hacer un reverse
-    #url(r"^login/$", auth_views.login, {"template_name", "photoadmin/site/login.html"}, name="login"),
+    url(r"^activate_account/(?P<hashed_email>\w+@\w+\.\w+)/confirmation/$", views.account_activation_confirm,  name="activate_account_confirmation"),
+    # Does not try to rever this url, that cause a ValueError
+    # So fat, I don't know why
+    url(r"^login/$", auth_views.login, {"template_name", "photoadmin/site/login.html"}, name="login"),
     
 ]
