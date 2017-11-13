@@ -1846,22 +1846,22 @@ div.dt-button-info {
   border-color: #1ab394 !important;
 }
 .has-success .form-control {
-  border-color: #1ab394;
+  border-color: #1ab394 !important;
 }
 .has-warning .form-control {
-  border-color: #f8ac59;
+  border-color: #f8ac59 !important;
 }
 .has-error .form-control {
-  border-color: #ed5565;
+  border-color: #ed5565 !important;
 }
 .has-success .control-label {
-  color: #1ab394;
+  color: #1ab394 !important;
 }
 .has-warning .control-label {
-  color: #f8ac59;
+  color: #f8ac59 !important;
 }
 .has-error .control-label {
-  color: #ed5565;
+  color: #ed5565 !important;
 }
 .input-group-addon {
   background-color: #fff;

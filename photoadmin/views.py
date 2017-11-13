@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.conf import settings
 from django.urls import reverse
 from django.http import *
+from django.contrib.auth import models as django_models
+
 from . import forms
-from django.contrib.auth import models as django_models;
+from . import models
+from django.contrib.postgres.aggregates import general
 
 # Create your views here.
 
@@ -40,6 +43,12 @@ def account_activation(request, hashed_email):
     ''' View function for activation account page
     '''
     form = None
+    data_context = {"app_name": APP_NAME}
+    data_context["start_at_step"] = 0  
+    
+    wizard_step_one_failed = False
+    wizard_step_two_failed = False
+    wizard_step_three_failed = False
     
     if request.method == "GET":
         
@@ -72,15 +81,66 @@ def account_activation(request, hashed_email):
         
         # If everything was ok then redirect user to login page
         if form.process_form():
-            return HttpResponseRedirect(reverse(APP_NAME+':activate_account_confirmation'));
+            return HttpResponseRedirect(reverse(APP_NAME+':activate_account_confirmation', args=(hashed_email,)));
+        
+        else:
+            data_context["gender"] = form.data['gender']
+            data_context["country"] = form.data['country']
             
-    # End main if
+            # if some error occurre while procesing the form then display errors to user            
+            general_errors = form.non_field_errors()
+            print(general_errors)
+            
+            if general_errors:
+                data_context["error"] = general[0]
+                
+            else:                                
+                data_context["validation_fail"] = True
+                                
+                # add to data_context failed fields dict
+                for key in form.errors.keys():
+                    
+                    # Determing which wizard step must be displayed based
+                    # on failed fields validation
+                    if not wizard_step_one_failed and key in ("name", "last_name", "birthday", "email"):
+                        wizard_step_one_failed = True    
+                        
+                    elif not wizard_step_two_failed and key in ("address", "city", "state", "zip_code", "country"):
+                        wizard_step_two_failed = True  
+                        
+                    elif not wizard_step_three_failed and key == "aggrement_acceptance":
+                        wizard_step_three_failed = True
+                        
+                    data_context[key+"_valid"] = False
+
+            print("wizard_step_one_failed = ", wizard_step_one_failed)
+            print("wizard_step_two_failed = ", wizard_step_two_failed)
+            print("wizard_step_three_failed = ", wizard_step_three_failed)
+               
+            if wizard_step_two_failed and not wizard_step_one_failed:
+                data_context["start_at_step"] = 1
+                
+            elif wizard_step_three_failed and not wizard_step_two_failed:
+                data_context["start_at_step"] = 2
+                                 
+                           
+        # End proces_form if-else   
+            
+            
+    # End main if  
     
-    return render(request, "photoadmin/site/activate_account.html", {"app_name": APP_NAME, "form": form})
+    data_context["form"] = form    
+    
+    print(data_context)
+    
+    return render(request, "photoadmin/site/activate_account.html", data_context)
 
 # End account_activation
 
-def account_activation_confirm(request):
-    pass
+def account_activation_confirm(request, hashed_email):
+    print("account_activation_confirm() Enter");
+    person = get_object_or_404(models.Person, email=hashed_email)
+    return render(request, "photoadmin/site/activate_account_confirm.html", {"app_name": APP_NAME, "name": person.name, "last_name": person.last_name, "gender": person.gender })
+    
 # End account_activation_confirm function
         

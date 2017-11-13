@@ -19,6 +19,6 @@ urlpatterns = [
     url(r"^activate_account/(?P<hashed_email>\w+@\w+\.\w+)/confirmation/$", views.account_activation_confirm,  name="activate_account_confirmation"),
     # Does not try to rever this url, that cause a ValueError
     # So fat, I don't know why
-    url(r"^login/$", auth_views.login, {"template_name", "photoadmin/site/login.html"}, name="login"),
+    url(r"^login/$", auth_views.login, name="login"),
     
 ]

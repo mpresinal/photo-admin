@@ -41,11 +41,17 @@ class Person(CommonDateField):
     
     """
     
+    GENDERS = [
+        ('F', 'Femenino'),
+        ('M', 'Masculino'),        
+    ]
+    
     id = models.BigAutoField(db_column="person_id", primary_key=True)
     name = models.CharField(db_column="name", max_length=60)
     last_name = models.CharField(db_column="last_name", max_length=60)
     birthday = models.DateField(db_column="birthday", null=True, blank=True)
     phone = models.CharField(db_column="phone", max_length=30, null=True, blank=True)
+    gender = models.CharField(db_column="gender", max_length=5, choices = GENDERS)
     cell_phone = models.CharField(db_column="cell_phone", max_length=30)
     email = models.EmailField(db_column="email", max_length=100)
     facebook = models.CharField(db_column="facebook", max_length=100, null=True, blank=True)

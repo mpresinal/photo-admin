@@ -11,8 +11,11 @@ from django.utils.translation import ugettext
 from django.db.models import ObjectDoesNotExist
 
 from . import models
+from . import utils
 
 COMMON_ATTRIB = {"class": "form-control"}
+
+LOGGER = utils.LoggerUtil()
 
 class RegistrationForm(forms.Form):
     
@@ -48,7 +51,7 @@ class RegistrationForm(forms.Form):
             else:
                 print("password and confirmation password are not the same")
                 self.add_error("user_password_confirm", ugettext(r"Las contraseñas no coinciden"))                 
-        
+                    
         return False
             
     # End process_form method
@@ -103,14 +106,17 @@ class ActivationAccountForm(forms.Form):
     TEL_ATTRIB = {k:v for k,v in COMMON_ATTRIB.items()}
     TEL_ATTRIB['type'] = 'tel'
     
+    FACEBOOK_URL = "https://www.facebook.com/"
+    
     name = forms.CharField(label=ugettext("Nombre"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     last_name = forms.CharField(label=ugettext("Apellido"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     birthday = forms.DateField(label=ugettext("birthday"), required=False, widget=forms.DateInput())
+    gender = forms.CharField(label=ugettext("Genero"), max_length=5, required=True, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     phone = forms.CharField(label=ugettext("Telefono"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))
     cell_phone = forms.CharField(label=ugettext("Celular"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))
     whatsapp = forms.CharField(label=ugettext("Whatsapp"), max_length=30, required=False, widget=forms.TextInput(attrs=TEL_ATTRIB))    
     email = forms.EmailField(label=ugettext("Email"), max_length=60, widget=forms.EmailInput(attrs=COMMON_ATTRIB))
-    facebook = forms.URLField(max_length=100, required=False)
+    facebook = forms.CharField(label=ugettext("Whatsapp"), max_length=100, required=False, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     
     #Person Address fields
     
@@ -141,11 +147,13 @@ class ActivationAccountForm(forms.Form):
                 user = User.objects.get(email=person.email)
                 print("user = {}".format(user))
                 
-                # Saving address first
-                print("** Saving address...")
-                address.save();
-                print("address.id = {}".format(address.id))
-                print("** Saving address...DONE")
+                if not address.id:
+                    # Saving address first
+                    print("** Saving address...")
+                    address.save();
+                    print("address.id = {}".format(address.id))
+                    print("** Saving address...DONE")
+                    
                 person.address = address
                 
                 # Saving person
@@ -166,7 +174,10 @@ class ActivationAccountForm(forms.Form):
             except Exception as e:
                 print("Error activating Account. {}".format(e))
                 self.add_error(None, ugettext("Error activando cuenta"));
-                        
+                
+        else:
+            print("Validation error. {}".format(self.errors))
+                           
         return False                    
         
     # End process_form
@@ -198,10 +209,11 @@ class ActivationAccountForm(forms.Form):
         person.name = data["name"]
         person.last_name = data["last_name"]
         person.birthday = data["birthday"]
+        person.gender = data["gender"]
         person.phone = data["phone"]
         person.cell_phone = data["cell_phone"]
         person.email = data["email"]
-        person.facebook = data["facebook"]
+        person.facebook = self.build_facebook_url()
         person.whatsapp = data["whatsapp"]
         
         return person              
@@ -213,14 +225,32 @@ class ActivationAccountForm(forms.Form):
         return an Address instance using the fields related to an address.
         '''
         addr = models.Address()
-        addr.address = data["address"]
-        addr.city = data["city"]
-        addr.state = data["state"]
+        addr.address = data["address"].upper()
+        addr.city = data["city"].upper()
+        addr.state = data["state"].upper()
         addr.zip_code = data["zip_code"]
-        addr.country = data["country"]
+        addr.country = data["country"].upper()
         
+        try:
+            LOGGER.debug("Checking if already exist an address...")
+            existing_address = models.Address.objects.get(address=addr.address, city=addr.city, 
+                state=addr.state, zip_code = addr.zip_code, country=addr.country
+            )
+            
+            if existing_address:
+                LOGGER.debug("Address already exist!!")
+                addr = existing_address
+            
+        except ObjectDoesNotExist as e:
+            LOGGER.debug("Does not exist address with the information specified. {}".format(e))          
+
         return addr
     # End get_addres_instance
+    
+    def build_facebook_url(self):
+        return ActivationAccountForm.FACEBOOK_URL + self.data["facebook"]
+    
+    # End method
     
     
 # end calss

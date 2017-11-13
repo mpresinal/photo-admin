@@ -23,7 +23,7 @@
                     <h5><strong>{% trans "Activación de Cuenta" %}</strong></h5>
                 </div>
                 <div class="ibox-content">
-
+                	                
                         <form id="wizardForm" name="activationForm" class="wizard-big" method="post" action=".">
                             {% csrf_token %}
                             <input type="hidden" name="current_step" value="{{step}}" />
@@ -51,12 +51,15 @@
 <script type="text/javascript">
 $(document).ready(function() {
     
-    $("#wizardForm").steps({
+	wizardForm = $("#wizardForm").steps({
         headerTag: 'h1',
         bodyTag: 'fieldset',
         
+        startIndex: {{start_at_step}},
+        
         /* Behaviour */
-        enableCancelButton: true,
+        enableCancelButton: true,        
+        showFinishButtonAlways: false,
         
         /* Events */
         onStepChanging: function(event, currentIndex, newIndex){ return wizard_onStepChange(event, currentIndex, newIndex); },

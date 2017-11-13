@@ -1,37 +1,42 @@
 {% extends './base.html' %}
 {% load i18n %}
-{% load staticfiles %}
+
+<!--
+    {% load staticfiles %} 
+-->
 <!DOCTYPE html>
 
-{% block title %} 
-    {% trans "Activar Cuenta" %}
-{% endblock %}
+{% block title %} {% trans 'Confirmacion' %} {% endblock %}
 
-{% block stylesheet %}
-<style type="text/css">
-	.help-block {
-	    margin-left: 41px;
-	}
-</style>
-{% endblock %}
-{% block content %}
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5><strong>{% trans "Cuenta Activada" %}</strong></h5>
-                </div>
-                <div class="ibox-content">
-                    <p>
-                    	{% trans 'Su cuenta ha sido activada correctamente. Para acceder a su cuenta presione Entrar'%}                    	
-                    </p>
-                    
-                    <a class="btn btn-sm btn-white btn-block" href=" {% url 'photoadmin:login' %}">Entrar</a>
-                </div>
+    {% block content%}  
+    <div class="middle-box text-center loginscreen   animated fadeInDown">  
+        <div>
+            <div>
+
+                <h1 class="logo-name">{{ app_name }}</h1>
+
             </div>
-        </div>
-
-    </div>
-</div>
-{% endblock %}
+            
+            <h3>{% trans 'Cuenta Activada' %}</h3>
+            
+            <p>
+            {% if gender == 'M' %}
+                    		{% trans 'Sr.' %}
+                    	{% endif %}
+                    	
+                    	{% if gender == 'F'%}
+                    		{% trans 'Sra.' %}
+                    	{% endif %}
+                    	{{name}} {{last_name}} {% trans 'su cuenta ha sido activada correctamente. Para acceder a su cuenta presione Entrar'%}<br/>
+                    	<br/>
+                    	<a class="btn btn-sm btn-white btn-block" href=" {% url 'PhotoAdmin:login' %}">Entrar</a>                    	
+            </p>
+            
+            
+            <p class="m-t"> <small>{{ app_name }} Copyright &copy; 2017</small> </p>
+        </div> 
+    </div>               
+            
+    {% endblock %}    
+    
+    

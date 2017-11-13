@@ -36,16 +36,16 @@ class LoggerUtil:
     def debug(self, message):
         
         if self.log_level == LOG_LEVEL_DEBUG:
-            self.log(self, message)
+            self.log(message)
              
     # end debug method
     
     def log(self, message):
         
         if self.out_destination == CONSOLE_DESTINATION:
-            self.log_to_console(self, message)
+            self.log_to_console(message)
         else:
-            self.log_to_file(self, message)
+            self.log_to_file(message)
             
         # End if-else
         

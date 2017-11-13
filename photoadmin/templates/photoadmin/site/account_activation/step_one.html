@@ -4,70 +4,100 @@
 <h1>{% trans "Datos Personales" %}</h1>
 
 <fieldset>
+
     <h2>{% trans "Datos Personales" %}</h2>
+    
+    
+    <div>
+    {% if start_at_step == 0 %}
+    	{% if validation_fail is True %}
+    	<br/><p class="text-danger">{% trans 'Confirme la informacion ingresada' %}</p><br/>
+    	{% endif %}
+    {% endif %}
+    </div>
+    
+    
+    <div class="">    
+    	<p>Los campos con <span class="text-danger">*</span> son requeridos</p>
+	</div>
+	<br/>
+	
+    
         
     <div class="row">
         
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if name_valid is False %} has-error {% endif %}">
                 <label>{% trans "Nombre" %} *</label>
-                <input id="name" name="name" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'name' %}">                
+                <input id="name" name="name" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'name' %}" readonly style="background-color: white;">                
             </div>
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if last_name_valid is False %} has-error {% endif %}">
                 <label>{% trans "Apellido" %} *</label>
-                <input id="lastName" name="last_name" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'last_name' %}">
+                <input id="lastName" name="last_name" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'last_name' %}" readonly style="background-color: white;">
             </div>
             
-            <div class="form-group col-lg-6" id="fechaNacimiento">
-                <label>{% trans "Fecha Nacimiento" %}</label>
+             <div class="form-group col-lg-6 {% if gender_valid is False %} has-error {% endif %}">
+            	<label>{% trans 'Genero' %}</label>
+            	<div class="input-group">
+            		<span class="input-group-addon"><i class="fa fa-male"></i> | <i class="fa fa-female"></i></span>
+            		<select class="form-control" name="gender" required>         			
+            			<option value="M" {% if gender == 'M'%}selected{% endif %}>{% trans 'Masculino' %}</option>
+            			<option value="F" {% if gender == 'F'%}selected{% endif %}>{% trans 'Femenino' %}</option>
+            		</select>
+            	</div>
+            </div>
+            
+            <div class="form-group col-lg-6 {% if birthday_valid is False %} has-error {% endif %}" id="fechaNacimiento">
+                <label>{% trans "Fecha Nacimiento" %} </label>
                 <div class="input-group date" data-provide="datepicker" data-date-format="dd/mm/yyyy">
                     <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                    <input id="birthday" type="text" name="birthday" class="form-control date-picker" value="" />                    
+                    <input id="birthday" type="text" name="birthday" value="{% dict_value form.data 'birthday' %}" class="form-control date-picker" readonly style="background-color: white;"/>                    
                 </div>
                 <span class="help-block">dd/mm/yyyy</span>
-            </div>
+            </div>            
+           
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if phone_valid is False %}has-error{% endif %}">
                 <label>{% trans "Telefono" %}</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                    <input type="tel" name="phone" class="form-control" data-mask="(999) 999-9999" />                    
+                    <input type="tel" name="phone" class="form-control" data-mask="(999) 999-9999" value="{% dict_value form.data 'phone' %}" />                    
                 </div>
                 <span class="help-block">(999) 999-9999</span>
             </div>
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if cell_phone_valid is False %} has-error {% endif %}">
                 <label>{% trans "Celular" %}</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
-                    <input type="tel" name="cell_phone" class="form-control" data-mask="(999) 999-9999" />                    
+                    <input type="tel" name="cell_phone" class="form-control" data-mask="(999) 999-9999" value="{% dict_value form.data 'cell_phone' %}"/>                    
                 </div>
                 <span class="help-block">(999) 999-9999</span>
             </div>
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if whatsapp_valid is False %} has-error {% endif %}">
                 <label>{% trans "Whatsapp" %}</label>
                 <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-mobile"></i></span>
-                    <input type="tel" name="whatsapp" class="form-control" data-mask="(999) 999-9999" />                    
+                    <input type="tel" name="whatsapp" class="form-control" data-mask="(999) 999-9999" value="{% dict_value form.data 'whatsapp' %}"/>                    
                 </div>
                 <span class="help-block">(999) 999-9999</span>
             </div>
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if email_valid is False %} has-error {% endif %}">
                 <label>{% trans "Email" %} *</label>
-                <input name="email" type="email" class="form-control" maxlength="60" value="{% dict_value form.data 'email' %}">
+                <input name="email" type="email" class="form-control" maxlength="60" value="{% dict_value form.data 'email' %}" readonly style="background-color: white;">
+                <span class="help-block" style="height: 19px"></span>
             </div>
             
-            <div class="form-group col-lg-6">
+            <div class="form-group col-lg-6 {% if facebook_valid is False %} has-error {% endif %}">
                 <label>{% trans "Facebook" %} *</label>
                 <div class="input-group">
                     <span class="input-group-addon">
                         <i class="fa fa-facebook-official"></i>
                         https://www.facebook.com/
                     </span>                    
-                    <input id="facebook-input" type="url" class="form-control" maxlength="60">
-                    <input type="hidden" id="facebook-hidden" name="facebook" value="" />
+                    <input id="facebook-input" type="text"  name="facebook" class="form-control" maxlength="60" value="{% dict_value form.data 'facebook' %}">                    
                 </div>                
             </div>              
         

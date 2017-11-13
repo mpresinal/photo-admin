@@ -1,35 +1,50 @@
 {% load i18n %}
+{% load photoadmin_tags %}
 
 <h1>{% trans "Direcci&oacute;n" %}</h1>
 <fieldset>
     <h2>{% trans "Direcci&oacute;n" %}</h2>
+    
+    <div>
+    {% if start_at_step == 1 %}
+    	{% if validation_fail is True %}
+    	<br/><p class="text-danger">{% trans 'Confirme la informaci&oacute;n ingresada' %}</p><br/>
+    	{% endif %}
+    {% endif %}
+    </div>
+    
+    
+    <div class="">    
+    	<p>Los campos con <span class="text-danger">*</span> son requeridos</p>
+	</div>
+	<br/>
         
     <div class="row">
         
-        <div class="form-group col-lg-12">
-            <label>{% trans "Direcci&oacute;n" %}</label>
-            <input name="address" type="text" class="form-control" maxlength="60">                
+        <div class="form-group col-lg-12 {% if address_valid is False %}has-error{% endif %}">
+            <label>{% trans "Direcci&oacute;n" %} *</label>
+            <input name="address" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'address' %}">                
         </div>
         
-        <div class="form-group col-lg-6">
-            <label>{% trans "Ciudad" %}</label>
-            <input name="city" type="text" class="form-control" maxlength="60">                
+        <div class="form-group col-lg-6 {% if city_valid is False %}has-error{% endif %}">
+            <label>{% trans "Ciudad" %} *</label>
+            <input name="city" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'city' %}">                
         </div>
         
-        <div class="form-group col-lg-6">
-            <label>{% trans "Estado" %}/{% trans "Provincia" %}</label>
-            <input name="state" type="text" class="form-control" maxlength="60">                
+        <div class="form-group col-lg-6 {% if state_valid is False %}has-error{% endif %}">
+            <label>{% trans "Estado" %}/{% trans "Provincia" %} *</label>
+            <input name="state" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'state' %}">                
         </div>            
         
-        <div class="form-group col-lg-6">
-            <label>{% trans "C&oacute;digo Postal" %}</label>
-            <input name="zip_code" type="text" class="form-control" maxlength="60">                
+        <div class="form-group col-lg-6 {% if zip_code_valid is False %}has-error{% endif %}">
+            <label>{% trans "C&oacute;digo Postal" %} *</label>
+            <input name="zip_code" type="text" class="form-control" maxlength="60" value="{% dict_value form.data 'zip_code' %}">                
         </div>
         
-        <div class="form-group col-lg-6">
-            <label>{% trans "Pa&iacute;s" %}</label>            
+        <div class="form-group col-lg-6 {% if country_valid is False %}has-error{% endif %}">
+            <label>{% trans "Pa&iacute;s" %} *</label>            
             <select class="form-control" name="country">
-                <option>Republica Dominicana</option>
+                <option {% if country == 'DR' %}selected{% endif %}>Republica Dominicana</option>
             </select>                
         </div>    
         

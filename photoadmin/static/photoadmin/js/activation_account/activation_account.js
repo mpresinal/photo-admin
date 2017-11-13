@@ -10,10 +10,6 @@ function wizard_onStepChange(event, currentIndex, newIndex) {
 		console.log("wizard_onStepChange():: newIndex = "+newIndex);
 	}
 	
-	if (currentIndex == 0) {
-		$("#facebook-hidden").val("https://www.facebook.com/"+$("#facebook-input").val());
-	}
-	
 	return true;
 }
 
