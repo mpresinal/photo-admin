@@ -23,7 +23,7 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(label=ugettext("Apellido"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     email = forms.CharField(label=ugettext("Correo Electronico"), max_length=60, widget=forms.EmailInput(attrs=COMMON_ATTRIB))
     username = forms.CharField(label=ugettext("Usuario"), max_length=150, widget=forms.TextInput(attrs=COMMON_ATTRIB))
-    user_password = forms.CharField(label=ugettext(r"Contraseña"), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
+    user_password = forms.CharField(label=ugettext(r"Contrase&ntilde;a"), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
     user_password_confirm = forms.CharField(label=ugettext(r"Repita la Contraseña"), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
     
     
@@ -133,14 +133,13 @@ class ActivationAccountForm(forms.Form):
         
         # Validating the form 
         if self.is_valid():
-            form_data = self.cleaned_data;
+            form_data = self.cleaned_data;            
+                
             person = self.get_person_instance(form_data)
             address = self.get_addres_instance(form_data)
             
             print("person = {}".format(person))
-            print("address = {}".format(address))
-            
-            # TODO: Check if the address already exist            
+            print("address = {}".format(address))                      
 
             try:                           
                 

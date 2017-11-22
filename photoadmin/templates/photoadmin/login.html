@@ -1,6 +1,7 @@
-{% extends './base.html' %}
+{% extends './site/base.html' %}
 
 {% load photoadmin_tags %}
+{% load i18n %}
 <!--
     {% load staticfiles %} 
 -->
@@ -25,26 +26,27 @@
             </div>
             
             <h3>Login</h3>
-            <p>{% trans 'Proporcione su usuario y contraseña para acceder' %}</p>
+            <p>{% trans 'Proporcione su usuario y contrase&ntilde;a para acceder' %}</p>
             
             {% if form.errors %}
 				<p class="text-danger">
-					{% trans 'Usuario/Contraseña invalido'%}
+					{% trans 'Usuario/Contrase&ntilde;a invalido'%}
 				</p>
 			{% endif %}
 			
             <form class="m-t" role="form" action="." method="post">
-            {% csrf_token %}
-            
-                {% for field in form %}
+            {% csrf_token %}            
                                 
                 <div class="form-group">
-                     <label class="block text-left">{{ field.label }}</label>
-                    {{ field }}                    
+                     <label class="block text-left">{% trans 'Usuario' %}</label>
+                    <input type="text" name="username" autofocus="" maxlength="150" required id="id_username"class="form-control">                    
                 </div>
                 
-                {% endfor %}
-                
+                <div class="form-group">
+                     <label class="block text-left">{% trans 'Contrase&ntilde;a' %}</label>
+                    <input type="password" name="password" maxlength="150" required id="id_password"class="form-control">                    
+                </div>
+                                
                 <input type="hidden" name="next" value="{{ next }}"/>
                 <button type="submit" class="btn btn-primary block full-width m-b">{% trans 'Acceder' %}</button>
 
@@ -67,4 +69,3 @@
         });
     </script>
     {% endblock %}
-    
