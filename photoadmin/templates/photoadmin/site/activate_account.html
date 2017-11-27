@@ -1,6 +1,7 @@
 {% extends './base.html' %}
 {% load i18n %}
 {% load staticfiles %}
+{% load photoadmin_tags %}
 <!DOCTYPE html>
 
 {% block title %} 
@@ -37,6 +38,8 @@
                     
                 </div>
             </div>
+            
+            <p class="m-t" style="text-align: center;"> <small>{% dict_value copy_right 'app_name' %} &copy; {% dict_value copy_right 'year' %}</small> </p>
         </div>
 
     </div>

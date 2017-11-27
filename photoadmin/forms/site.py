@@ -10,8 +10,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext
 from django.db.models import ObjectDoesNotExist
 
-from . import models
-from . import utils
+from .. import models
+from .. import utils
 
 COMMON_ATTRIB = {"class": "form-control"}
 
@@ -23,8 +23,8 @@ class RegistrationForm(forms.Form):
     last_name = forms.CharField(label=ugettext("Apellido"), max_length=60, widget=forms.TextInput(attrs=COMMON_ATTRIB))
     email = forms.CharField(label=ugettext("Correo Electronico"), max_length=60, widget=forms.EmailInput(attrs=COMMON_ATTRIB))
     username = forms.CharField(label=ugettext("Usuario"), max_length=150, widget=forms.TextInput(attrs=COMMON_ATTRIB))
-    user_password = forms.CharField(label=ugettext(r"Contrase&ntilde;a"), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
-    user_password_confirm = forms.CharField(label=ugettext(r"Repita la Contraseña"), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
+    user_password = forms.CharField(label=ugettext(r"Contrase{}a".format(u"\u00F1")), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
+    user_password_confirm = forms.CharField(label=ugettext(r"Repita la Contrase{}a".format(u"\u00F1")), max_length=10, widget=forms.PasswordInput(attrs=COMMON_ATTRIB))
     
     
     def process_form(self):
@@ -253,6 +253,7 @@ class ActivationAccountForm(forms.Form):
     
     
 # end calss
+
 
 
 

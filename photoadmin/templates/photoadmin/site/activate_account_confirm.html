@@ -3,6 +3,7 @@
 
 <!--
     {% load staticfiles %} 
+    {% load photoadmin_tags %}
 -->
 <!DOCTYPE html>
 
@@ -33,7 +34,7 @@
             </p>
             
             
-            <p class="m-t"> <small>{{ app_name }} Copyright &copy; 2017</small> </p>
+            <p class="m-t"> <small>{% dict_value copy_right 'app_name' %} &copy; {% dict_value copy_right 'year' %}</small> </p>
         </div> 
     </div>               
             

@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import datetime
+from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -117,3 +119,9 @@ MEDIA_URL = '/media/'
 
 # User defined settings
 APP_NAME = "PhotoAdmin"
+APP_DISPLAY_NAME = APP_NAME;
+
+# django auth module config
+LOGIN_REDIRECT_URL = reverse_lazy(APP_NAME+":home")
+LOGIN_URL = reverse_lazy(APP_NAME+":login")
+LOGOUT_URL = reverse_lazy(APP_NAME+":login")

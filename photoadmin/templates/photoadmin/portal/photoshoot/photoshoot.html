@@ -1,0 +1,45 @@
+{% extends '../base.html' %}
+{% load i18n %}
+
+{% block title %} 
+	{% trans 'Gestionar Sesion' %}  
+{% endblock %}
+
+{% block stylesheet %}
+
+{% endblock %}
+
+{% block pageTitle %}
+ {% trans 'Gestionar Sesion' %}
+{% endblock %}
+
+{% block breadcrumb %}
+	<ol class="breadcrumb">
+		<li><a href="../home"><strong>{% trans 'Inicio' %}</strong></a></li>
+		<li class="active"><a href="."><strong>{% trans 'Gestionar Sesion' %}</strong></a></li>		
+	</ol>
+{% endblock %}
+
+{% block actionArea %}
+{% endblock %}
+{% block content %}
+<div class="row">
+	<div class="col-lg-12">
+		<div class="ibox">
+			<div class="ibox-title">
+				<h5>{% trans 'Mis sesiones de Fotos'%}</h5>
+				<div class="ibox-tools">
+					<a href="" class="btn btn-primary btn-xs">{% trans 'Registrar Sesion' %}</a>
+				</div>
+			</div>
+			
+			<div class="ibox-content">
+				{% if view_mode == 'LIST' %}
+					{% include './list.html' %}
+				{% endif %}
+								
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

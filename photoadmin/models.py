@@ -183,7 +183,20 @@ class PhotoShoot(CommonDateField):
     
     class Meta:
         db_table="photo_shoot"
-
+        
+    # End Inner class Meta
+    
+    @classmethod
+    def filter_by_name_or_description(self, criteria):
+        """ 
+        This method find any photo shoot that match the provided criteria.
+        It filter by name or description
+        """
+        
+        return PhotoShoot.objects.filter(models.Q(name__icontains=criteria) | models.Q(description__icontains=criteria))
+    
+    # End filter method
+    
 # End class PhotoShoot
 
 class PhotoShootPhoto(CommonDateField):

@@ -3,18 +3,16 @@ from django.conf import settings
 from django.urls import reverse
 from django.http import *
 from django.contrib.auth import models as django_models
+from django.contrib.auth import decorators as django_decorators;
+from datetime import date
+from ..forms import site as forms
+from .. import models
 
-from . import forms
-from . import models
-from django.contrib.postgres.aggregates import general
+from .common import *
 
-# Create your views here.
 
-APP_NAME = settings.APP_NAME
-
-def index(request):
-    return HttpResponseRedirect(reverse(APP_NAME+":registration"))
-    #return render(request, "photoadmin/index.html", {}, "text/html");
+def index(request):    
+    return render(request, "photoadmin/index.html", {}, "text/html");
 # End index function
 
 def registration(request):
@@ -33,17 +31,17 @@ def registration(request):
     else:
         form = forms.RegistrationForm()
         
-    return render(request, "photoadmin/site/register.html", {"app_name": APP_NAME, "form": form}, "text/html")
+    return render(request, "photoadmin/site/register.html", create_context({"form": form}), "text/html")
 # End registration view
 
 def registration_cofirm(request):
-    return render(request, "photoadmin/site/register_cofirm.html", {"app_name": APP_NAME})  
+    return render(request, "photoadmin/site/register_cofirm.html", DEFAULT_CONTEXT)  
 
 def account_activation(request, hashed_email):
     ''' View function for activation account page
     '''
     form = None
-    data_context = {"app_name": APP_NAME}
+    data_context = create_context()
     data_context["start_at_step"] = 0  
     
     wizard_step_one_failed = False
@@ -79,7 +77,7 @@ def account_activation(request, hashed_email):
     else:
         form = forms.ActivationAccountForm(request.POST)
         
-        # If everything was ok then redirect user to login page
+        # If everything was ok then redirect user to confirmation page
         if form.process_form():
             return HttpResponseRedirect(reverse(APP_NAME+':activate_account_confirmation', args=(hashed_email,)));
         
@@ -92,7 +90,7 @@ def account_activation(request, hashed_email):
             print(general_errors)
             
             if general_errors:
-                data_context["error"] = general[0]
+                data_context["error"] = general_errors[0]
                 
             else:                                
                 data_context["validation_fail"] = True
@@ -140,7 +138,6 @@ def account_activation(request, hashed_email):
 def account_activation_confirm(request, hashed_email):
     print("account_activation_confirm() Enter");
     person = get_object_or_404(models.Person, email=hashed_email)
-    return render(request, "photoadmin/site/activate_account_confirm.html", {"app_name": APP_NAME, "name": person.name, "last_name": person.last_name, "gender": person.gender })
+    return render(request, "photoadmin/site/activate_account_confirm.html", create_context({"name": person.name, "last_name": person.last_name, "gender": person.gender }))
     
 # End account_activation_confirm function
-        
